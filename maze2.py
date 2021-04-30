@@ -1,21 +1,25 @@
 from random import shuffle, randrange
+
  
 def make_maze(w = 5, h = 5):
     vis = [[0] * w + [1] for _ in range(h)] + [[1] * (w + 1)]
     ver = [["|  "] * w + ['|'] for _ in range(h)] + [[]]
     hor = [["+--"] * w + ['+'] for _ in range(h + 1)]
  
-    def walk(x, y):     #The walk inside this maze starting from the cell x,y
-        vis[y][x] = 1   # Mark the starting cell as visited
+    def walk(x, y):     # The walk inside this maze starting from the cell x,y
+        vis[y][x] = 1   # First mark the starting cell as visited
+
+        d = [(x - 1, y), (x, y + 1), (x + 1, y), (x, y - 1)] # describe the walk directions sequence (1 step to the Left, Down, Right, Up)
+        shuffle(d)              # and changhe the directions order in this one-step sequence randomly
         
-        d = [(x - 1, y), (x, y + 1), (x + 1, y), (x, y - 1)] # description of the 1-step direction choosing sequence (1 step to the Left, Down, Right, Up)
-        for (xx, yy) in d:      # check out the each neighbour cell starting from a random direction
-            if vis[yy][xx]: continue    # if this cell visited, then just continue with next one in a random direction
-            if xx == x: hor[max(y, yy)][x] = "+  "
-            if yy == y: ver[y][max(x, xx)] = "   "
-            walk(xx, yy)
+        for (xx, yy) in d:      # check out all the neighbour cells step by step in a random sequence
+            if vis[yy][xx]: continue    # if the checking cell already visited, then just continue with a next one
+                                        # else:
+            if xx == x: hor[max(y, yy)][x] = "+  " # replace initial "+--" to "+  " and open the vertically throupath if it was nonvisited neibour along y-coordinate (the x is not changed)
+            if yy == y: ver[y][max(x, xx)] = "   " # replace initial "|" to " " and open horisontally throupath if it was nonvisited neibour along x-coordinate (the y is not changed)
+            walk(xx, yy)                           # and go far recursively
  
-    walk(randrange(w), randrange(h)) #Start the walk from a random cell
+    walk(randrange(w), randrange(h)) #Start the walk from a random cell inside the maze
  
     s = ""
     for (a, b) in zip(hor, ver):
