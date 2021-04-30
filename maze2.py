@@ -10,7 +10,7 @@ def make_maze(w = 5, h = 5):
         vis[y][x] = 1   # First mark the starting cell as visited
 
         d = [(x - 1, y), (x, y + 1), (x + 1, y), (x, y - 1)] # describe the walk directions sequence (1 step to the Left, Down, Right, Up)
-        shuffle(d)              # and changhe the directions order in this one-step sequence randomly
+        shuffle(d)              # and change the directions order in this one-step sequence randomly
         
         for (xx, yy) in d:      # check out all the neighbour cells step by step in a random sequence
             if vis[yy][xx]: continue    # if the checking cell already visited, then just continue with a next one
